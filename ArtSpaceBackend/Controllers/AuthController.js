@@ -1,11 +1,14 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../Models/User");
 const jwt = require("jsonwebtoken");
+const generateUsername = require("../Util/generateUsername");
 
 //signup validation
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    //check if the user is already present in the db or not
+    const username = await generateUsername(name);
     const user = await UserModel.findOne({ email });
     if (user) {
       return res.status(409).json({
@@ -13,8 +16,11 @@ const signup = async (req, res) => {
         success: false,
       });
     }
-    const userModel = new UserModel({ name, email, password });
-    userModel.password = await bcrypt.hash(password, 10);
+    const userModel = new UserModel({ name, email, password, username });
+    const saltRounds = 10; // 10 is the salt round
+    //check password is matched or not
+    userModel.password = await bcrypt.hash(password, saltRounds);
+    //save userModel in Mongodb
     await userModel.save();
     res.status(201).json({
       message: "Signup successfully",

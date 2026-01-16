@@ -196,7 +196,7 @@ const Dashboard = () => {
         headers: { Authorization: token },
         body: data,
       });
-      
+
       const result = await res.json();
       if (!res.ok) throw new Error(result.message);
       setImages((prev) =>
@@ -244,7 +244,7 @@ const Dashboard = () => {
           </svg>
         </button>
 
-        <div className="w-24 h-24 mx-auto rounded-full bg-purple-500 text-white text-4xl flex items-center justify-center overflow-hidden">
+        <div className="w-40 h-40 mx-auto rounded-full bg-purple-500 text-white text-6xl flex items-center justify-center overflow-hidden">
           {user.profilePhoto ? (
             <img
               src={user.profilePhoto}
@@ -257,7 +257,8 @@ const Dashboard = () => {
             "U"
           )}
         </div>
-        <h2 className="mt-3 font-semibold text-xl">{user.name}</h2>
+        <h2 className="mt-3 font-semibold text-2xl">{user.name}</h2>
+        <h2 className="mt-1 text-gray-600 font-semibold">@{user.username}</h2>
         <p className="text-gray-500 mt-1">{user.bio || "No bio yet"}</p>
 
         <div className="flex justify-center gap-10 mt-4">
@@ -477,10 +478,10 @@ const Dashboard = () => {
               </button>
               <button
                 onClick={handleUpdateProfile}
-                 disabled={loading}
+                disabled={loading}
                 className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700"
               >
-                 {loading ? "Saving..." : "Save Changes"}
+                {loading ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </div>

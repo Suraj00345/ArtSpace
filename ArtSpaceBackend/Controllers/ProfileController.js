@@ -40,10 +40,12 @@ const getUserProfile = async (req, res) => {
       user: {
         _id: profileUser._id,
         name: profileUser.name,
+        username: profileUser.username,
         profilePhoto: profileUser.profilePhoto,
         bio: profileUser.bio,
         followersCount: profileUser.followersCount,
         followingCount: profileUser.followingCount,
+        usernameChangedAt: profileUser.usernameChangedAt,
         isMe,
         isFollowing,
       },
@@ -90,7 +92,7 @@ const updateProfile = async (req, res) => {
       userId,
       { $set: updateData },
       { new: true, runValidators: true }
-    ).select("name profilePhoto bio");
+    ).select("name profilePhoto bio username");
 
     // console.log(updatedUser);
 

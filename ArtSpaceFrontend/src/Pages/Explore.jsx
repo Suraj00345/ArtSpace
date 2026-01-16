@@ -33,6 +33,7 @@ const Explore = () => {
 
   const API_URL = "http://localhost:3000";
   const token = localStorage.getItem("token");
+  const loggedInUser = localStorage.getItem("loggedInUser");
 
   useEffect(() => {
     //here we fetch all the posts
@@ -296,7 +297,7 @@ const Explore = () => {
                         {selectedPost.artist?.name}
                       </span>
                       <br />
-                      <span className="text-[10px] text-gray-500">
+                      <span className="text-[12px] text-gray-500">
                         {selectedPost.createdAt &&
                           new Date(selectedPost.createdAt).toLocaleDateString(
                             "en-US",
@@ -336,7 +337,7 @@ const Explore = () => {
                           alt=""
                         />
                         <span className="font-bold mr-1">
-                          {c.user?.name || "user"}
+                          {c.user?.name || loggedInUser}
                         </span>
                         {c.text}
                       </p>

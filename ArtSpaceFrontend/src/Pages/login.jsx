@@ -42,13 +42,11 @@ const Login = () => {
         localStorage.setItem("loggedInUser", name);
 
         setTimeout(() => navigate("/explore"), 1000);
-
       } else if (error) {
         handleError(error?.details?.[0]?.message);
       } else {
         handleError(message);
       }
-
     } catch (error) {
       handleError(error.message || "Something went wrong");
     }
@@ -57,16 +55,17 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 border border-gray-200">
-
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Login
         </h1>
 
         <form onSubmit={handleLogin} className="space-y-5">
-
           {/* Email Input */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700" htmlFor="email">
+            <label
+              className="block mb-1 font-medium text-gray-700"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -82,7 +81,10 @@ const Login = () => {
 
           {/* Password Input */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700" htmlFor="password">
+            <label
+              className="block mb-1 font-medium text-gray-700"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -107,7 +109,7 @@ const Login = () => {
 
           {/* Signup Redirect */}
           <p className="text-center text-gray-600">
-            Create your account? 
+            Create your account?
             <Link
               to="/signup"
               className="text-blue-600 font-medium hover:underline ml-1"

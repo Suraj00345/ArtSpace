@@ -5,6 +5,8 @@ const { init } = require("./Util/socket.js");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+
+//create Http server
 const httpServer = createServer(app);
 
 //start socket.io server
@@ -28,6 +30,7 @@ const commentRouter = require("./Routes/CommentRouter.js");
 const ProfileRouter = require("./Routes/ProfileRouter.js");
 const FollowRouter = require("./Routes/FollowRouter.js");
 const NotificationRouter = require("./Routes/NotificationRouter.js");
+const SettingsRouter = require("./Routes/SettingsRouter.js");
 
 //Auth router
 app.use("/auth", AuthRouter);
@@ -41,6 +44,8 @@ app.use("/profile", ProfileRouter);
 app.use("/", FollowRouter);
 //Notification router
 app.use("/notification", NotificationRouter);
+//Settings router
+app.use("/settings", SettingsRouter);
 
 // Health check
 app.get("/ping", (req, res) => {

@@ -15,8 +15,17 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
+    // select: false,
   },
   // PUBLIC PROFILE
+  username: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    index: true,
+    sparse: true,
+  },
   profilePhoto: {
     type: String,
     default: "",
@@ -35,12 +44,30 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
-
+  //username cooldown
+  usernameChangedAt: {
+    type: Date,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
+
+// // PASSWORD HASHING (POINT #4 — ADDED HERE)
+// UserSchema.pre("save", async function (next) {
+//   // only hash if password is new or changed
+//   if (!this.isModified("password")) return next();
+
+//   try {
+//     const saltRounds = 10;
+//     this.password = await bcrypt.hash(this.password, saltRounds);
+//     next();
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 const UserModel = mongoose.model("users", UserSchema);
 module.exports = UserModel;

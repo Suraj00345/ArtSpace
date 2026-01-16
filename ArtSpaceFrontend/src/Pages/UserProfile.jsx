@@ -82,8 +82,8 @@ const UserProfile = () => {
   const { user, artworks } = data;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-6">
+    <div className="min-h-screen bg-gray-100 py-8 px-4">
+      <div className="max-w-8xl mx-auto bg-white rounded-xl shadow-md p-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <img
             src={user.profilePhoto || "https://via.placeholder.com/150"}
@@ -93,9 +93,7 @@ const UserProfile = () => {
 
           <div className="flex-1 text-center md:text-left">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-800">
-                {user.username}
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-800">{user.name}</h1>
 
               {!user.isMe && (
                 <button
