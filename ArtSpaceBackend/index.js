@@ -42,7 +42,7 @@ app.use("/", commentRouter);
 //Profile route
 app.use("/profile", ProfileRouter);
 //Follow route
-app.use("/", FollowRouter);
+app.use("/user", FollowRouter);
 //Notification route
 app.use("/notification", NotificationRouter);
 //Settings route

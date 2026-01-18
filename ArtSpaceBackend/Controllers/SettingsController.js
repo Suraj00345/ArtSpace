@@ -1,4 +1,9 @@
 const User = require("../Models/User");
+const Artwork = require("../Models/artwork");
+const Comment = require("../Models/comment");
+const Follow = require("../Models/follow");
+const Notification = require("../Models/notification");
+const cloudinary = require("../Util/cloudinary");
 const bcrypt = require("bcrypt");
 
 //change Username
@@ -109,4 +114,53 @@ const changePassoword = async (req, res) => {
   }
 };
 
-module.exports = { changeUsername, changePassoword };
+//delete account
+const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { password } = req.body;
+
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Password incorrect" });
+    }
+
+    // Remove profile photo
+    if (user.profilePhoto) {
+      const publicId = user.profilePhoto.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(`profile/${publicId}`);
+    }
+
+    // Remove artworks + images
+    const artworks = await Artwork.find({ artist: userId });
+    for (const art of artworks) {
+      const artPublicId = art.imageUrl.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(`artworks/${artPublicId}`);
+    }
+
+    await Artwork.deleteMany({ artist: userId });
+    await Comment.deleteMany({ user: userId });
+    await Follow.deleteMany({
+      $or: [{ follower: userId }, { following: userId }],
+    });
+    await Notification.deleteMany({ receiver: userId });
+
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Account deleted permanently",
+    });
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { changeUsername, changePassoword, deleteAccount };

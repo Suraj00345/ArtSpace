@@ -44,7 +44,7 @@ const Notification = () => {
   const markAsRead = async (id) => {
     try {
       setNotifications((prev) =>
-        prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
+        prev.map((n) => (n._id === id ? { ...n, isRead: true } : n)),
       );
 
       await fetch(`${API_URL}/notification/${id}/read`, {

@@ -14,25 +14,28 @@ import {
   Loader2,
   Check,
   Clock,
+  Trash2,
 } from "lucide-react";
 
 const Settings = () => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const navigate = useNavigate();
 
-  // Username feature states
+  // Existing Username feature states
   const [username, setUsername] = useState("");
   const [originalUsername, setOriginalUsername] = useState("");
-  const [lastChanged, setLastChanged] = useState(null); // To track cooldown
+  const [lastChanged, setLastChanged] = useState(null);
   const [updateStatus, setUpdateStatus] = useState("idle");
+
+  // New Delete Account states
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [deleteError, setDeleteError] = useState("");
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
-    // Update React State (for the UI)
     setTheme(newTheme);
-    // Update LocalStorage (for persistence)
     localStorage.setItem("theme", newTheme);
-    // Update the HTML class (for Tailwind/CSS logic)
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
@@ -59,8 +62,6 @@ const Settings = () => {
 
         setOriginalUsername(data.user.username || "");
         setUsername(data.user.username);
-        // Store the date from your backend
-
         setLastChanged(data.user.usernameChangedAt);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -69,10 +70,8 @@ const Settings = () => {
     fetchUserData();
   }, [authToken]);
 
-  // Cooldown Calculation
   const getCooldownInfo = () => {
     if (!lastChanged) return { isUnderCooldown: false, daysLeft: 0 };
-
     const lastDate = new Date(lastChanged);
     const now = new Date();
     const diffInMs = now - lastDate;
@@ -88,7 +87,7 @@ const Settings = () => {
   };
 
   const cooldown = getCooldownInfo();
-  //handle username update
+
   const handleUpdateUsername = async () => {
     setUpdateStatus("loading");
     try {
@@ -101,15 +100,12 @@ const Settings = () => {
         body: JSON.stringify({ username: username }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
         setOriginalUsername(username);
-        setLastChanged(new Date()); // Update local cooldown immediately
+        setLastChanged(new Date());
         setUpdateStatus("success");
         setTimeout(() => setUpdateStatus("idle"), 3000);
       } else {
-        // You can use data.message from your controller here
         setUpdateStatus("error");
       }
     } catch (error) {
@@ -117,13 +113,39 @@ const Settings = () => {
     }
   };
 
-  //handle loggedout function
   const handleLoggedOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("theme");
-    //redirect it into login route
     navigate("/login", { replace: true });
+  };
+
+  const handleDeleteAccount = async () => {
+    setUpdateStatus("loading");
+    setDeleteError("");
+    try {
+      const response = await fetch(`${API_URL}/settings/delete-account`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authToken,
+        },
+        body: JSON.stringify({ password: confirmPassword }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.clear();
+        navigate("/signup", { replace: true });
+      } else {
+        setDeleteError(data.message || "Incorrect password. Please try again.");
+        setUpdateStatus("idle");
+      }
+    } catch (error) {
+      setDeleteError("Something went wrong. Please try again.");
+      setUpdateStatus("idle");
+    }
   };
 
   const isUnchanged = username === originalUsername || username.trim() === "";
@@ -134,9 +156,8 @@ const Settings = () => {
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
-      {/* HEADER - Fixed the bg-white bug */}
       <div
-        className={`sticky top-0 z-10  mb-6 transition-colors ${
+        className={` top-0  mb-6 transition-colors ${
           theme === "dark" ? "bg-gray-900" : "bg-gray-50"
         }`}
       >
@@ -145,6 +166,7 @@ const Settings = () => {
           Manage your account preferences and security.🏠
         </p>
       </div>
+
       <div className="max-w-2xl mx-auto">
         <div
           className={`rounded-2xl shadow-xl overflow-hidden border ${
@@ -202,7 +224,6 @@ const Settings = () => {
                 </button>
               </div>
 
-              {/* COOLDOWN TIMELINE BOX */}
               {cooldown.isUnderCooldown && (
                 <div
                   className={`flex items-center gap-3 p-3 rounded-lg border ${
@@ -228,7 +249,6 @@ const Settings = () => {
               )}
             </div>
 
-            {/* Rest of the component stays the same */}
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
                 <Mail size={16} /> Email Address
@@ -253,6 +273,7 @@ const Settings = () => {
               </div>
             </div>
 
+            {/* Existing Change Password Button */}
             <button
               className={`w-full flex items-center justify-between p-3 rounded-xl border transition ${
                 theme === "dark"
@@ -264,7 +285,27 @@ const Settings = () => {
                 <div className="p-2 bg-orange-100 text-orange-600 rounded-lg">
                   <Lock size={18} />
                 </div>
-                <span className="font-medium">Change Password</span>
+                <button className="font-medium opacity-50 cursor-not-allowed" disabled={true}>
+                  Change Password
+                </button>
+              </div>
+              <ChevronRight size={18} className="text-gray-400" />
+            </button>
+
+            {/* NEW Delete Account Button */}
+            <button
+              onClick={() => setIsDeleteModalOpen(true)}
+              className={`w-full flex items-center justify-between p-3 rounded-xl border transition ${
+                theme === "dark"
+                  ? "hover:bg-red-900/20 border-gray-700"
+                  : "hover:bg-red-50 border-gray-100"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-100 text-red-600 rounded-lg">
+                  <Trash2 size={18} />
+                </div>
+                <span className="font-medium text-red-500">Delete Account</span>
               </div>
               <ChevronRight size={18} className="text-gray-400" />
             </button>
@@ -321,6 +362,74 @@ const Settings = () => {
           </div>
         </div>
       </div>
+
+      {/* DELETE ACCOUNT MODAL */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4">
+          <div
+            className={`w-full max-w-md p-6 rounded-2xl shadow-2xl transition-all scale-100 ${
+              theme === "dark"
+                ? "bg-gray-800 text-white"
+                : "bg-white text-gray-900"
+            }`}
+          >
+            <h3 className="text-xl font-bold mb-2">Delete Account?</h3>
+            <p className="text-sm text-gray-500 mb-6">
+              This action is permanent and cannot be undone. Please enter your
+              password to confirm.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold uppercase text-gray-500 mb-1 block">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-red-500 ${
+                    theme === "dark"
+                      ? "bg-gray-700 border-gray-600"
+                      : "bg-gray-50 border-gray-200"
+                  }`}
+                />
+              </div>
+
+              {deleteError && (
+                <p className="text-xs text-red-500 font-medium bg-red-50 dark:bg-red-900/20 p-2 rounded">
+                  {deleteError}
+                </p>
+              )}
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => {
+                    setIsDeleteModalOpen(false);
+                    setConfirmPassword("");
+                    setDeleteError("");
+                  }}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-medium border border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={!confirmPassword || updateStatus === "loading"}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition flex items-center justify-center gap-2"
+                >
+                  {updateStatus === "loading" ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    "Delete Forever"
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

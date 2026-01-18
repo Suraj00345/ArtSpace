@@ -92,7 +92,7 @@ const updateProfile = async (req, res) => {
       userId,
       { $set: updateData },
       { new: true, runValidators: true },
-    ).select("name profilePhoto bio username");
+    ).select("name profilePhoto bio username followersCount followingCount");
 
     // console.log(updatedUser);
 
@@ -144,4 +144,42 @@ const searchUser = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, updateProfile, searchUser };
+//Delete ProfilePhoto
+const deleteProfilePhoto = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.profilePhoto) {
+      return res.status(400).json({ message: "No profile photo to remove" });
+    }
+
+    // Extract public_id from Cloudinary URL
+    const publicId = user.profilePhoto.split("/").pop().split(".")[0];
+
+    await cloudinary.uploader.destroy(`profile/${publicId}`);
+
+    user.profilePhoto = "";
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile photo removed successfully",
+    });
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {
+  getUserProfile,
+  updateProfile,
+  searchUser,
+  deleteProfilePhoto,
+};

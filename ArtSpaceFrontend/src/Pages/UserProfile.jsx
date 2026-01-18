@@ -43,7 +43,7 @@ const UserProfile = () => {
       // Determine endpoint based on current state
       const endpoint = isFollowing ? "unfollow" : "follow";
 
-      const res = await fetch(`${API_URL}/${endpoint}/${artistId}`, {
+      const res = await fetch(`${API_URL}/user/${endpoint}/${artistId}`, {
         method: "POST", // Usually POST for actions that modify data
         headers: {
           Authorization: token,

@@ -102,9 +102,7 @@ const Dashboard = () => {
       const res = await fetch(`${API_URL}/profile/updateProfile`, {
         method: "PUT",
         headers: {
-          Authorization: token,
-          // Note: Don't set 'Content-Type' header when sending FormData;
-          // the browser sets it automatically with the boundary string.
+          Authorization: token
         },
         body: data,
       });
@@ -206,6 +204,40 @@ const Dashboard = () => {
       showNotification("Artwork Updated");
     } catch (err) {
       showNotification(err.message, "error");
+    }
+  };
+
+  const handleRemoveProfilePhoto = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to remove your profile photo?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`${API_URL}/profile/deleteProfilePhoto`, {
+        method: "DELETE",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Failed to remove photo");
+        return;
+      }
+
+      // Update UI instantly
+      setProfileData({
+        ...profileData,
+        profilePhoto: null,
+        preview: null, // This clears the image from the UI
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
     }
   };
 
@@ -436,23 +468,31 @@ const Dashboard = () => {
                     </div>
                   )}
                 </div>
-                <label className="cursor-pointer bg-purple-50 text-purple-700 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-purple-100 transition">
-                  Change Photo{" "}
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={(e) => {
-                      if (e.target.files[0]) {
-                        setProfileData({
-                          ...profileData,
-                          profilePhoto: e.target.files[0],
-                          preview: URL.createObjectURL(e.target.files[0]),
-                        });
-                      }
-                    }}
-                  />
-                </label>
+                <div>
+                  <label className="cursor-pointer bg-purple-50 text-purple-700 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-purple-100 transition">
+                    {user.profilePhoto ? "Change Photo" : "Upload Photo"}
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files[0]) {
+                          setProfileData({
+                            ...profileData,
+                            profilePhoto: e.target.files[0],
+                            preview: URL.createObjectURL(e.target.files[0]),
+                          });
+                        }
+                      }}
+                    />
+                  </label>
+                  <button
+                    onClick={handleRemoveProfilePhoto}
+                    className="cursor-pointer bg-purple-50 text-purple-700 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-purple-100 transition"
+                  >
+                    Remove Photo
+                  </button>
+                </div>
               </div>
               <div className="space-y-4">
                 <div>

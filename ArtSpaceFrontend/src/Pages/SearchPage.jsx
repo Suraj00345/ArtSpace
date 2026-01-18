@@ -82,7 +82,7 @@ const SearchPage = () => {
           Let's make a search for an artist rather than your soulmate👀
         </p>
       </div>
-      <div className="max-w-6xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto p-4 bg-gray-100 h-full">
         <div className="relative mb-4">
           <Search className="absolute left-3 top-3 text-gray-400" size={18} />
           <input
@@ -90,13 +90,13 @@ const SearchPage = () => {
             placeholder="Search artists here..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500"
+            className="w-xl pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
         </div>
 
         {/* Results Dropdown/List */}
         {query && (
-          <div className="bg-white border rounded-xl shadow-sm divide-y overflow-hidden">
+          <div className="bg-white w-xl border rounded-xl shadow-sm divide-y overflow-hidden">
             {loading ? (
               <p className="p-4 text-sm text-gray-500">Searching...</p>
             ) : profiles.length === 0 ? (
@@ -108,8 +108,8 @@ const SearchPage = () => {
                   className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer transition"
                 >
                   <img
-                    src={u.profilePhoto || "/avatar.png"}
-                    alt={u.username}
+                    src={u.profilePhoto}
+                    alt={u.username[0].toUpperCase()}
                     className="w-10 h-10 rounded-full object-cover bg-gray-200"
                   />
                   <div>
@@ -137,7 +137,7 @@ const SearchPage = () => {
                 />
 
                 {/* Optional Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <p className="text-white text-sm font-medium">View Artwork</p>
                 </div>
               </div>
