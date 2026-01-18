@@ -86,8 +86,8 @@ const Explore = () => {
         prev.map((p) =>
           p._id === postId
             ? { ...p, isLiked: data.liked, likesCount: data.likesCount }
-            : p
-        )
+            : p,
+        ),
       );
     } catch (err) {
       console.error(err.message);
@@ -121,10 +121,10 @@ const Explore = () => {
   return (
     <>
       {/* HEADER */}
-      <div className="w-full px-4 py-7 ">
-        <h1 className="text-2xl font-bold">Explore</h1>
-        <p className="text-gray-500 text-sm">
-          Everyone is an artist these days, so discover artwork from artists
+      <div className="w-full px-4 py-6 ">
+        <h1 className="text-3xl font-bold">Explore💥</h1>
+        <p className="text-gray-500 text-sm pt-1">
+          Everyone is an artist these days, so discover artworks from artists
           around the world 🐻
         </p>
       </div>
@@ -136,7 +136,7 @@ const Explore = () => {
           {posts.map((post) => (
             <article
               key={post._id}
-              className="bg-white border border-gray-300 rounded-xl"
+              className="bg-white border border-gray-300 rounded-xl shadow-2xl"
             >
               <div className="flex items-center justify-between p-3">
                 <div
@@ -170,10 +170,6 @@ const Explore = () => {
                     </span>
                   </div>
                 </div>
-                <MoreHorizontal
-                  size={20}
-                  className="text-gray-600 cursor-pointer"
-                />
               </div>
 
               <img
@@ -306,7 +302,7 @@ const Explore = () => {
                               day: "numeric",
                               hour: "2-digit",
                               minute: "2-digit",
-                            }
+                            },
                           )}
                       </span>
                     </div>

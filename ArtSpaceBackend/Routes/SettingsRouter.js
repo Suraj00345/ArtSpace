@@ -6,10 +6,10 @@ const {
   changePassoword,
 } = require("../Controllers/SettingsController");
 
-//Username change api
+//Username change API
 router.patch("/username", ensureAuthenticaticated, changeUsername);
 
-//Passoword change api
+//Passoword change API
 router.patch("/updatePassword", ensureAuthenticaticated, changePassoword);
 
 module.exports = router;

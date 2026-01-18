@@ -7,9 +7,10 @@ import Explore from "./Pages/Explore";
 import RefreshHandler from "./RefreshHandler";
 import Dashboard from "./Pages/Dashboard";
 import LeftNavbar from "./Pages/Navbar";
-import Notification from "./Pages/notification";
-import Settings from "./Pages/settings";
+import Notification from "./Pages/Notification";
+import Settings from "./Pages/Settings";
 import Profile from "./Pages/UserProfile";
+import Search from "./Pages/SearchPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,6 +39,22 @@ function App() {
                     <LeftNavbar />
                     <main className="ml-64 w-full">
                       <Explore />
+                    </main>
+                  </div>
+                }
+              />
+            }
+          />
+
+          <Route
+            path="/search"
+            element={
+              <PrivateRoute
+                element={
+                  <div className="flex">
+                    <LeftNavbar />
+                    <main className="ml-64 w-full">
+                      <Search />
                     </main>
                   </div>
                 }

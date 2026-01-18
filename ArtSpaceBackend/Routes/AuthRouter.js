@@ -6,9 +6,10 @@ const {
 
 const router = require("express").Router();
 
-// login router API
+// Login router API
 router.post("/login", loginValidation, login);
-// signup router API
+
+// Signup router API
 router.post("/signup", signupValidation, signup);
 
 module.exports = router;

@@ -6,10 +6,10 @@ const {
   markAsRead,
 } = require("../Controllers/NotificationController");
 
-//get all the notification
+//Get all the notification API
 router.get("/", ensureAuthenticaticated, getNotifications);
 
-//mark as read notification
+//Mark as read notification API
 router.patch("/:id/read", ensureAuthenticaticated, markAsRead);
 
 module.exports = router;

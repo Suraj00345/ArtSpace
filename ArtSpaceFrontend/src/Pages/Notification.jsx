@@ -96,11 +96,11 @@ const Notification = () => {
   return (
     <div className=" mx-auto min-h-screen bg-gray-100 md:border-x">
       {/* HEADER */}
-      <div className="sticky top-0 bg-white z-10 px-6 py-2">
+      <div className="sticky top-0 bg-white z-10 px-6 pt-3">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h2 className="text-2xl font-bold">Notifications</h2>
-            <span className="text-gray-500 text-sm">
+            <h2 className="text-3xl font-bold">Notifications🔔</h2>
+            <span className="text-gray-500 text-sm pt-1">
               Always receive notifications for updates, whether in real life or
               within ArtSpace 😉
             </span>

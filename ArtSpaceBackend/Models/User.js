@@ -6,6 +6,7 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
+    index: true,
   },
   email: {
     type: String,
@@ -44,7 +45,7 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
-  //username cooldown
+  // USER COOLDOWN
   usernameChangedAt: {
     type: Date,
     default: null,

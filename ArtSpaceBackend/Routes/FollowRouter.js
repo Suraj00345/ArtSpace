@@ -3,10 +3,10 @@ const router = express.Router();
 const { ensureAuthenticaticated } = require("../Middlewares/Auth");
 const { followUser, unFollowUser } = require("../Controllers/FollowController");
 
-//follow user API
+//Follow user API
 router.post("/follow/:userId", ensureAuthenticaticated, followUser);
 
-//unfollow user API
+//Unfollow user API
 router.post("/unfollow/:userId", ensureAuthenticaticated, unFollowUser);
 
 module.exports = router;

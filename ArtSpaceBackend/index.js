@@ -14,13 +14,14 @@ init(httpServer);
 
 // bodyParser.json() middleware is used in Node.js/Express.js
 // applications to parse incoming HTTP request bodies that are in JSON format,
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
 // DB connection
 require("./Models/db");
 
-//PORT
+// PORT
 const PORT = process.env.PORT || 3001;
 
 // Routes
@@ -32,22 +33,22 @@ const FollowRouter = require("./Routes/FollowRouter.js");
 const NotificationRouter = require("./Routes/NotificationRouter.js");
 const SettingsRouter = require("./Routes/SettingsRouter.js");
 
-//Auth router
+//Auth route
 app.use("/auth", AuthRouter);
-//Artwork router
+//Artwork route
 app.use("/artworks", ArtworkRouter);
-//Comment router
+//Comment route
 app.use("/", commentRouter);
-//Profile router
+//Profile route
 app.use("/profile", ProfileRouter);
-//Follow router
+//Follow route
 app.use("/", FollowRouter);
-//Notification router
+//Notification route
 app.use("/notification", NotificationRouter);
-//Settings router
+//Settings route
 app.use("/settings", SettingsRouter);
 
-// Health check
+//Health check
 app.get("/ping", (req, res) => {
   res.send("PONG");
 });

@@ -15,19 +15,23 @@ const Navbar = () => {
       {/* Nav Links */}
       <nav className="p-4 flex flex-col gap-2">
         <NavLink to="/explore" className={linkClass}>
-          Explore
+          Explore 💥
+        </NavLink>
+
+        <NavLink to="/search" className={linkClass}>
+          Search 🔍
         </NavLink>
 
         <NavLink to="/notification" className={linkClass}>
-          Notifications
+          Notifications 🔔
         </NavLink>
 
         <NavLink to="/dashboard" className={linkClass}>
-          Dashboard
+          Dashboard 🪪
         </NavLink>
 
         <NavLink to="/settings" className={linkClass}>
-          Settings
+          Settings ⚙️
         </NavLink>
       </nav>
     </aside>

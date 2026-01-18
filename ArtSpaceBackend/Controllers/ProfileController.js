@@ -3,7 +3,7 @@ const Follow = require("../Models/follow");
 const Artwork = require("../Models/artwork");
 const cloudinary = require("../Util/cloudinary");
 
-//get user profile
+//Get user profile
 const getUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -57,7 +57,7 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-//update profile details
+//Update profile details
 const updateProfile = async (req, res) => {
   try {
     const userId = req.userId;
@@ -91,7 +91,7 @@ const updateProfile = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $set: updateData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("name profilePhoto bio username");
 
     // console.log(updatedUser);
@@ -108,4 +108,40 @@ const updateProfile = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, updateProfile };
+//Search Profile details
+const searchUser = async (req, res) => {
+  try {
+    // CHANGE THIS LINE:
+    const { q } = req.query;
+    // console.log("Query received:", q);
+
+    if (!q || q.trim().length < 2) {
+      return res.status(200).json({
+        success: true,
+        users: [],
+      });
+    }
+
+    const safeQuery = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const users = await User.find({
+      $or: [
+        { username: { $regex: `^${safeQuery}`, $options: "i" } },
+        { name: { $regex: safeQuery, $options: "i" } },
+      ],
+    })
+      .select("username name profilePhoto followersCount")
+      .limit(10)
+      .lean();
+
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.error("Search Error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+module.exports = { getUserProfile, updateProfile, searchUser };

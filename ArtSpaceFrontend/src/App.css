@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: masonry; /* This is the magic line */
+  gap: 16px;
+}

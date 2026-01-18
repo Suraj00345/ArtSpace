@@ -134,8 +134,18 @@ const Settings = () => {
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
+      {/* HEADER - Fixed the bg-white bug */}
+      <div
+        className={`sticky top-0 z-10  mb-6 transition-colors ${
+          theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+        }`}
+      >
+        <h2 className="text-3xl font-bold">Settings⚙️</h2>
+        <p className="text-gray-500 text-sm mt-1">
+          Manage your account preferences and security.🏠
+        </p>
+      </div>
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Settings</h1>
         <div
           className={`rounded-2xl shadow-xl overflow-hidden border ${
             theme === "dark"
