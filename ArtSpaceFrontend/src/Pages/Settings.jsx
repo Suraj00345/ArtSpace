@@ -4,11 +4,9 @@ import { jwtDecode } from "jwt-decode";
 import {
   User,
   Mail,
-  ShieldCheck,
   Moon,
   Sun,
   Lock,
-  Bell,
   LogOut,
   ChevronRight,
   Loader2,
@@ -208,7 +206,7 @@ const Settings = () => {
                     updateStatus === "loading" ||
                     cooldown.isUnderCooldown
                   }
-                  className={`min-w-[100px] flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                  className={`min-w-25 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
                     updateStatus === "success"
                       ? "bg-green-600 text-white"
                       : "bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white"
@@ -266,7 +264,7 @@ const Settings = () => {
                 />
                 <button
                   disabled={true}
-                  className="min-w-[100px] bg-indigo-600 opacity-50 cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+                  className="min-w-25 bg-indigo-600 opacity-50 cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
                 >
                   Update
                 </button>
@@ -274,7 +272,7 @@ const Settings = () => {
             </div>
 
             {/* Existing Change Password Button */}
-            <button
+            <div
               className={`w-full flex items-center justify-between p-3 rounded-xl border transition ${
                 theme === "dark"
                   ? "hover:bg-gray-700 border-gray-700"
@@ -285,12 +283,15 @@ const Settings = () => {
                 <div className="p-2 bg-orange-100 text-orange-600 rounded-lg">
                   <Lock size={18} />
                 </div>
-                <button className="font-medium opacity-50 cursor-not-allowed" disabled={true}>
+                <button
+                  className="font-medium opacity-50 cursor-not-allowed"
+                  disabled={true}
+                >
                   Change Password
                 </button>
               </div>
               <ChevronRight size={18} className="text-gray-400" />
-            </button>
+            </div>
 
             {/* NEW Delete Account Button */}
             <button
@@ -365,7 +366,7 @@ const Settings = () => {
 
       {/* DELETE ACCOUNT MODAL */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-70 p-4">
           <div
             className={`w-full max-w-md p-6 rounded-2xl shadow-2xl transition-all scale-100 ${
               theme === "dark"

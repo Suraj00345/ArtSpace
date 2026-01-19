@@ -90,7 +90,7 @@ const getAllArtwork = async (req, res) => {
   }
 };
 
-//get user's artwork
+//get user's all artwork
 const getUserArtWork = async (req, res) => {
   try {
     const artworks = await Artwork.find({ artist: req.user }).sort({
@@ -100,6 +100,30 @@ const getUserArtWork = async (req, res) => {
     res.json(artworks);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch user artworks" });
+  }
+};
+
+// get particular artwork by ID
+const getArtwork = async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const artwork = await Artwork.findById(postId).populate(
+      "artist",
+      "name username profilePhoto",
+    );
+
+    if (!artwork) {
+      return res.status(404).json({
+        message: "Artwork not found",
+      });
+    }
+
+    res.status(200).json(artwork);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch artwork",
+    });
   }
 };
 
@@ -194,8 +218,8 @@ const toggleLikeArtwork = async (req, res) => {
     }
 
     await artwork.save();
-    
-   //send response
+
+    //send response
     res.status(200).json({
       message: isLiked ? "Artwork unliked" : "Artwork liked",
       likesCount: artwork.likes.length,
@@ -222,6 +246,7 @@ module.exports = {
   createArtwork,
   getAllArtwork,
   getUserArtWork,
+  getArtwork,
   deleteArtWork,
   editArtWork,
   toggleLikeArtwork,

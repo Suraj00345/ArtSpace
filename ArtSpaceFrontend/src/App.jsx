@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./App.css";
 import Login from "./Pages/login";
 import Signup from "./Pages/Signup";
-import Explore from "./Pages/Explore";
+import Explore from "./Pages/Explore/Explore";
 import RefreshHandler from "./RefreshHandler";
 import Dashboard from "./Pages/Dashboard";
 import LeftNavbar from "./Pages/Navbar";

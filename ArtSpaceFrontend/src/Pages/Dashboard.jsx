@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { jwtDecode } from "jwt-decode";
+import Loader from "../Loader";
+import UserPost from "./UserPost";
 
 const Dashboard = () => {
   const API_URL = "http://localhost:3000";
@@ -11,6 +13,7 @@ const Dashboard = () => {
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [notification, setNotification] = useState(null);
   const [token, setToken] = useState(null);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   const fileInputRef = useRef(null);
 
@@ -102,7 +105,7 @@ const Dashboard = () => {
       const res = await fetch(`${API_URL}/profile/updateProfile`, {
         method: "PUT",
         headers: {
-          Authorization: token
+          Authorization: token,
         },
         body: data,
       });
@@ -243,6 +246,14 @@ const Dashboard = () => {
 
   if (!user) return <div className="p-10 text-center">Loading Profile...</div>;
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <>
       {/* HEADER */}
@@ -367,6 +378,7 @@ const Dashboard = () => {
           {images.map((img) => (
             <div
               key={img._id}
+              onClick={() => setSelectedPostId(img._id)}
               className="bg-white rounded shadow overflow-hidden"
             >
               <img src={img.imageUrl} className="h-48 w-full object-cover" />
@@ -393,6 +405,13 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
+
+        {selectedPostId && (
+          <UserPost
+            postId={selectedPostId}
+            onClose={() => setSelectedPostId(null)}
+          />
+        )}
 
         {/* ✏️ Artwork Edit Modal */}
         {isEditOpen && (

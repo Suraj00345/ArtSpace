@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import UserPost from "./UserPost";
+import Loader from "../Loader";
 
 const API_URL = "http://localhost:3000";
 
@@ -8,6 +11,18 @@ const SearchPage = () => {
   const [profiles, setProfiles] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const navigate = useNavigate();
+  const handleProfileClick = (artistId) => {
+    const id = typeof artistId === "object" ? artistId._id : artistId;
+    if (!id) {
+      console.error("No ID found for artist:", artistId);
+      return;
+    }
+    // console.log("Navigating to profile with ID:", id);
+    navigate(`/profile/${id}`);
+  };
 
   const token = localStorage.getItem("token"); // Get fresh token
 
@@ -73,6 +88,14 @@ const SearchPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <>
       {/* HEADER */}
@@ -105,10 +128,16 @@ const SearchPage = () => {
               profiles.map((u) => (
                 <div
                   key={u._id}
+                  onClick={() => {
+                    handleProfileClick(u._id);
+                  }}
                   className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer transition"
                 >
                   <img
-                    src={u.profilePhoto}
+                    src={
+                      u.profilePhoto ||
+                      `https://ui-avatars.com/api/?name=${u.name}&background=random&color=fff`
+                    }
                     alt={u.username[0].toUpperCase()}
                     className="w-10 h-10 rounded-full object-cover bg-gray-200"
                   />
@@ -128,6 +157,9 @@ const SearchPage = () => {
             {artworks.map((art) => (
               <div
                 key={art._id}
+                onClick={() => {
+                  setSelectedPost(art);
+                }}
                 className="relative break-inside-avoid rounded-xl overflow-hidden group shadow-sm hover:shadow-md transition-shadow duration-300"
               >
                 <img
@@ -142,6 +174,13 @@ const SearchPage = () => {
                 </div>
               </div>
             ))}
+
+            {selectedPost && (
+              <UserPost
+                postId={selectedPost._id}
+                onClose={() => setSelectedPost(null)}
+              />
+            )}
           </div>
         )}
       </div>

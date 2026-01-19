@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Loader from "../Loader";
 
 const UserProfile = () => {
   const { artistId } = useParams();
@@ -13,7 +14,7 @@ const UserProfile = () => {
         setLoading(true);
         const token = localStorage.getItem("token");
         const res = await fetch(`${API_URL}/profile/${artistId}`, {
-          headers: { Authorization: token },
+          headers: { Authorization: token, "Content-Type": "application/json" },
         });
         const result = await res.json();
 
@@ -74,8 +75,14 @@ const UserProfile = () => {
   };
   // ---------------------------------
 
-  if (loading)
-    return <div className="text-center py-20">Loading Profile...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
   if (!data || !data.user)
     return <div className="text-center py-20">User not found.</div>;
 
@@ -86,7 +93,10 @@ const UserProfile = () => {
       <div className="max-w-8xl mx-auto bg-white rounded-xl shadow-md p-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <img
-            src={user.profilePhoto || "https://via.placeholder.com/150"}
+            src={
+              user.profilePhoto ||
+              `https://ui-avatars.com/api/?name=${user.name}&background=random&color=fff`
+            }
             alt="Profile"
             className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
           />

@@ -7,6 +7,7 @@ import {
   MoreHorizontal,
   Loader2,
 } from "lucide-react";
+import Loader from "../Loader";
 
 const API_URL = "http://localhost:3000";
 
@@ -93,6 +94,14 @@ const Notification = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <div className=" mx-auto min-h-screen bg-gray-100 md:border-x">
       {/* HEADER */}
@@ -136,7 +145,11 @@ const Notification = () => {
         filteredNotifications.map((n) => (
           <div
             key={n._id}
-            onClick={() => !n.isRead && markAsRead(n._id)}
+            onClick={() => {
+              if (!n.isRead) {
+                markAsRead(n._id);
+              }
+            }}
             className={`bg-white p-6 rounded-xl shadow m-3 flex gap-4 px-6 py-4 cursor-pointer ${
               n.isRead ? "bg-white" : "bg-blue-50"
             }`}
