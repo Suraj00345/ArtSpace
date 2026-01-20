@@ -485,7 +485,7 @@ const Dashboard = () => {
 
         {/* 👤 Profile Edit Modal */}
         {isProfileModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60]">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-60">
             <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-2xl">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold">Edit Profile</h3>

@@ -1,4 +1,4 @@
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 export const handleSuccess = (msg) => {
   toast.success(msg, {
@@ -12,4 +12,6 @@ export const handleError = (msg) => {
   });
 };
 
-export const API_URL = "https://artspace-mno1.onrender.com/";
+export const API_URL = "http://localhost:3000";
+
+// export const API_URL = "https://artspace-mno1.onrender.com";
