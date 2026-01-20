@@ -1,6 +1,14 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
+
+// Components
 import Login from "./Pages/login";
 import Signup from "./Pages/Signup";
 import Explore from "./Pages/Explore/Explore";
@@ -12,12 +20,27 @@ import Settings from "./Pages/Settings";
 import Profile from "./Pages/UserProfile";
 import Search from "./Pages/SearchPage";
 
+//  The Layout Wrapper
+//  This handles the repetitive UI (Navbar + Main container)
+
+const AppLayout = ({ isAuthenticated }) => {
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
+    <div className="flex">
+      <LeftNavbar />
+      <main className="ml-64 w-full">
+        {/* Outlet renders the child routes defined in App() */}
+        <Outlet />
+      </main>
+    </div>
+  );
+};
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const PrivateRoute = ({ element }) => {
-    return isAuthenticated ? element : <Navigate to="/login" replace />;
-  };
 
   return (
     <div className="App">
@@ -25,110 +48,23 @@ function App() {
         <RefreshHandler setIsAuthenticated={setIsAuthenticated} />
 
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* EXPLORE */}
-          <Route
-            path="/explore"
-            element={
-              <PrivateRoute
-                element={
-                  <div className="flex">
-                    <LeftNavbar />
-                    <main className="ml-64 w-full">
-                      <Explore />
-                    </main>
-                  </div>
-                }
-              />
-            }
-          />
+          {/*Protected Routes Group using the Layout */}
+          <Route element={<AppLayout isAuthenticated={isAuthenticated} />}>
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/profile/:artistId" element={<Profile />} />
+            <Route path="/notification" element={<Notification />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
 
-          <Route
-            path="/search"
-            element={
-              <PrivateRoute
-                element={
-                  <div className="flex">
-                    <LeftNavbar />
-                    <main className="ml-64 w-full">
-                      <Search />
-                    </main>
-                  </div>
-                }
-              />
-            }
-          />
-
-          {/* DYNAMIC PROFILE PAGE (PROTECTED) */}
-          <Route
-            path="/profile/:artistId"
-            element={
-              <PrivateRoute
-                element={
-                  <div className="flex">
-                    <LeftNavbar />
-                    <main className="ml-64 w-full">
-                      <Profile />
-                    </main>
-                  </div>
-                }
-              />
-            }
-          />
-
-          {/* NOTIFICATION */}
-          <Route
-            path="/notification"
-            element={
-              <PrivateRoute
-                element={
-                  <div className="flex">
-                    <LeftNavbar />
-                    <main className="ml-64 w-full">
-                      <Notification />
-                    </main>
-                  </div>
-                }
-              />
-            }
-          />
-
-          {/* DASHBOARD */}
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute
-                element={
-                  <div className="flex">
-                    <LeftNavbar />
-                    <main className="ml-64 w-full">
-                      <Dashboard />
-                    </main>
-                  </div>
-                }
-              />
-            }
-          />
-
-          {/* SETTINGS */}
-          <Route
-            path="/settings"
-            element={
-              <PrivateRoute
-                element={
-                  <div className="flex">
-                    <LeftNavbar />
-                    <main className="ml-64 w-full">
-                      <Settings />
-                    </main>
-                  </div>
-                }
-              />
-            }
-          />
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </div>

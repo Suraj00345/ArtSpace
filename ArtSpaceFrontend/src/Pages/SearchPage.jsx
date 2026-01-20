@@ -105,7 +105,7 @@ const SearchPage = () => {
           Let's make a search for an artist rather than your soulmate👀
         </p>
       </div>
-      <div className="max-w-7xl mx-auto p-4 bg-gray-100 h-full">
+      <div className="max-w-full mx-auto p-4 bg-gray-100 h-full">
         <div className="relative mb-4">
           <Search className="absolute left-3 top-3 text-gray-400" size={18} />
           <input

@@ -321,7 +321,7 @@ const Settings = () => {
             <h2 className="text-sm font-bold uppercase text-gray-500 tracking-wider">
               Preferences
             </h2>
-            <div className="flex items-center justify-between">
+            <div disabled className="flex items-center justify-between opacity-50 cursor-not-allowed">
               <div className="flex items-center gap-3">
                 <div
                   className={`p-2 rounded-lg ${
