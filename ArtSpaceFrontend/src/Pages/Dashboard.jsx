@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import Loader from "../Loader";
 import UserPost from "./UserPost";
 import { API_URL } from "../utils";
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil, Trash2 } from "lucide-react";
 
 const Dashboard = () => {
   // --- States ---
@@ -244,7 +244,12 @@ const Dashboard = () => {
     }
   };
 
-  if (!user) return <div className="p-10 text-center">Loading Profile...</div>;
+  if (!user)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   if (loading) {
     return (
@@ -395,14 +400,14 @@ const Dashboard = () => {
                     onClick={() => handleEdit(img)}
                     className="bg-white/90 hover:bg-gray text-gray-800 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                   >
-                   <Pencil/>
+                    <Pencil />
                   </button>
                   <button
                     onClick={() => handleDelete(img._id)}
                     disabled={deleteLoading === img._id}
                     className="bg-violet-500/90 hover:bg-violet-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
                   >
-                    {deleteLoading === img._id ? "..." : <Trash2/>}
+                    {deleteLoading === img._id ? "..." : <Trash2 />}
                   </button>
                 </div>
               </div>
