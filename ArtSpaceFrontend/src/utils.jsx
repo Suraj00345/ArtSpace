@@ -11,3 +11,5 @@ export const handleError = (msg) => {
     position: "top-right",
   });
 };
+
+export const API_URL = "http://localhost:3000";

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Loader from "../../Loader";
 import Article from "./Article";
+import { API_URL } from "../../utils";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const API_URL = "http://localhost:3000";
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const Explore = () => {
     fetchExplorePosts();
   }, []);
 
-if (loading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader />
@@ -44,7 +44,7 @@ if (loading) {
     <>
       {/* HEADER */}
       <div className="w-full px-4 py-6 ">
-        <h1 className="text-3xl font-bold">Explore💥</h1>
+        <h1 className="text-3xl font-bold text-violet-600">Explore💥</h1>
         <p className="text-gray-500 text-sm pt-1">
           Everyone is an artist these days, so discover artworks from artists
           around the world 🐻

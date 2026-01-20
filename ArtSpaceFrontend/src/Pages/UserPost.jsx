@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import Loader from "../Loader";
 
-const API_URL = "http://localhost:3000";
+import { API_URL } from "../utils";
 
 const UserPost = ({ postId, onClose }) => {
   const token = localStorage.getItem("token");

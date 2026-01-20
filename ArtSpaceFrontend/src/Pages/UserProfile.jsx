@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
+import { API_URL } from "../utils";
+import UserPost from "./UserPost";
 
 const UserProfile = () => {
   const { artistId } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const API_URL = "http://localhost:3000";
+  
+  // State for the Modal (Selected Post)
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   useEffect(() => {
     const fetchArtistProfile = async () => {
@@ -35,17 +39,15 @@ const UserProfile = () => {
     }
   }, [artistId]);
 
-  // --- NEW FOLLOW/UNFOLLOW LOGIC ---
+  // FOLLOW/UNFOLLOW LOGIC 
   const handleFollowToggle = async () => {
     try {
       const token = localStorage.getItem("token");
       const isFollowing = data.user.isFollowing;
-
-      // Determine endpoint based on current state
       const endpoint = isFollowing ? "unfollow" : "follow";
 
       const res = await fetch(`${API_URL}/user/${endpoint}/${artistId}`, {
-        method: "POST", // Usually POST for actions that modify data
+        method: "POST",
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
@@ -53,13 +55,11 @@ const UserProfile = () => {
       });
 
       if (res.ok) {
-        // Update local state to show change immediately
         setData((prevData) => ({
           ...prevData,
           user: {
             ...prevData.user,
             isFollowing: !isFollowing,
-            // Update follower count locally
             followersCount: isFollowing
               ? prevData.user.followersCount - 1
               : prevData.user.followersCount + 1,
@@ -73,7 +73,6 @@ const UserProfile = () => {
       console.error("Network error during follow toggle:", error);
     }
   };
-  // ---------------------------------
 
   if (loading) {
     return (
@@ -91,6 +90,8 @@ const UserProfile = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <div className="max-w-8xl mx-auto bg-white rounded-xl shadow-md p-8">
+        
+        {/* Header Section */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <img
             src={
@@ -146,6 +147,7 @@ const UserProfile = () => {
           </div>
         </div>
 
+        {/* Artworks Grid */}
         <div className="border-t mt-8 pt-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Latest Artworks
@@ -154,7 +156,9 @@ const UserProfile = () => {
             {artworks.map((art) => (
               <div
                 key={art._id}
-                className="group relative overflow-hidden rounded-lg shadow-sm aspect-square bg-gray-200"
+                className="group relative overflow-hidden rounded-lg shadow-sm aspect-square bg-gray-200 cursor-pointer"
+                // FIX: Used the setter function here
+                onClick={() => setSelectedPostId(art._id)} 
               >
                 <img
                   src={art.imageUrl}
@@ -169,6 +173,15 @@ const UserProfile = () => {
               </div>
             ))}
           </div>
+          
+          {/* Post Modal */}
+          {selectedPostId && (
+            <UserPost
+              postId={selectedPostId}
+              onClose={() => setSelectedPostId(null)}
+            />
+          )}
+
           {artworks.length === 0 && (
             <p className="text-center text-gray-400 py-10">
               No artworks uploaded yet.

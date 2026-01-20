@@ -14,6 +14,7 @@ import {
   Clock,
   Trash2,
 } from "lucide-react";
+import { API_URL } from "../utils";
 
 const Settings = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -41,7 +42,6 @@ const Settings = () => {
     }
   };
 
-  const API_URL = "http://localhost:3000";
   const authToken = localStorage.getItem("token");
   const COOLDOWN_DAYS = 14;
 
@@ -159,7 +159,7 @@ const Settings = () => {
           theme === "dark" ? "bg-gray-900" : "bg-gray-50"
         }`}
       >
-        <h2 className="text-3xl font-bold">Settings⚙️</h2>
+        <h2 className="text-3xl font-bold text-violet-600">Settings⚙️</h2>
         <p className="text-gray-500 text-sm mt-1">
           Manage your account preferences and security.🏠
         </p>
@@ -321,7 +321,10 @@ const Settings = () => {
             <h2 className="text-sm font-bold uppercase text-gray-500 tracking-wider">
               Preferences
             </h2>
-            <div disabled className="flex items-center justify-between opacity-50 cursor-not-allowed">
+            <div
+              disabled
+              className="flex items-center justify-between opacity-50 cursor-not-allowed"
+            >
               <div className="flex items-center gap-3">
                 <div
                   className={`p-2 rounded-lg ${

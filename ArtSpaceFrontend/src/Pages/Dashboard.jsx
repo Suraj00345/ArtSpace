@@ -2,10 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import { jwtDecode } from "jwt-decode";
 import Loader from "../Loader";
 import UserPost from "./UserPost";
+import { API_URL } from "../utils";
+import { Pencil, Trash2 } from 'lucide-react'
 
 const Dashboard = () => {
-  const API_URL = "http://localhost:3000";
-
   // --- States ---
   const [user, setUser] = useState(null);
   const [images, setImages] = useState([]);
@@ -258,7 +258,7 @@ const Dashboard = () => {
     <>
       {/* HEADER */}
       <div className="w-full px-4 py-6 ">
-        <h1 className="text-3xl font-bold">Dashboard🪪</h1>
+        <h1 className="text-3xl font-bold text-violet-600">Dashboard🪪</h1>
         <p className="text-gray-500 text-sm pt-1">
           Looking at others' profiles is okay, but looking at your own profile
           is the main thing to remember.🔥
@@ -374,33 +374,55 @@ const Dashboard = () => {
         </div>
 
         {/* 🖼 Artwork Grid */}
-        <div className="grid md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {images.map((img) => (
             <div
               key={img._id}
-              onClick={() => setSelectedPostId(img._id)}
-              className="bg-white rounded shadow overflow-hidden"
+              className="group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
             >
-              <img src={img.imageUrl} className="h-48 w-full object-cover" />
-              <div className="p-3">
-                <h4 className="font-semibold">{img.title}</h4>
-                <p className="text-sm text-gray-500 line-clamp-2">
-                  {img.description}
-                </p>
-                <div className="flex justify-between mt-3">
+              {/* Image Container */}
+              <div className="relative aspect-square overflow-hidden bg-gray-100 cursor-pointer">
+                <img
+                  src={img.imageUrl}
+                  onClick={() => setSelectedPostId(img._id)}
+                  alt={img.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+
+                {/* Quick Action Overlay (Visible on Hover) */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
                   <button
                     onClick={() => handleEdit(img)}
-                    className="text-blue-500"
+                    className="bg-white/90 hover:bg-gray text-gray-800 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                   >
-                    Edit
+                   <Pencil/>
                   </button>
                   <button
                     onClick={() => handleDelete(img._id)}
-                    className="text-red-500"
+                    disabled={deleteLoading === img._id}
+                    className="bg-violet-500/90 hover:bg-violet-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
                   >
-                    {deleteLoading === img._id ? "Deleting..." : "Delete"}
+                    {deleteLoading === img._id ? "..." : <Trash2/>}
                   </button>
                 </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-1">
+                  <h4
+                    className="font-bold text-gray-800 truncate flex-1"
+                    title={img.title}
+                  >
+                    {img.title}
+                  </h4>
+                </div>
+
+                {img.description && (
+                  <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                    {img.description}
+                  </p>
+                )}
               </div>
             </div>
           ))}

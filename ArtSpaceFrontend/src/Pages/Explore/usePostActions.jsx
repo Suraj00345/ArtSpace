@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { API_URL } from "../../utils";
 
-const API_URL = "http://localhost:3000";
+
 
 export const usePostActions = (initialPost) => {
   const [post, setPost] = useState(initialPost);

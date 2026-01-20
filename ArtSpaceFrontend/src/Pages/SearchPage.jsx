@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import UserPost from "./UserPost";
 import Loader from "../Loader";
 
-const API_URL = "http://localhost:3000";
+import { API_URL } from "../utils";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -100,7 +100,7 @@ const SearchPage = () => {
     <>
       {/* HEADER */}
       <div className="w-full px-4 py-6 ">
-        <h1 className="text-3xl font-bold">Search🔍</h1>
+        <h1 className="text-3xl font-bold text-violet-600">Search🔍</h1>
         <p className="text-gray-500 text-sm pt-1">
           Let's make a search for an artist rather than your soulmate👀
         </p>
