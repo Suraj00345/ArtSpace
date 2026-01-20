@@ -99,13 +99,13 @@ const SearchPage = () => {
   return (
     <>
       {/* HEADER */}
-      <div className="w-full px-4 py-6 ">
+      <div className="w-full px-4 py-6">
         <h1 className="text-3xl font-bold text-violet-600">Search🔍</h1>
         <p className="text-gray-500 text-sm pt-1">
           Let's make a search for an artist rather than your soulmate👀
         </p>
       </div>
-      <div className="max-w-full mx-auto p-4 bg-gray-100 h-full">
+      <div className="max-w-full mx-auto p-4 bg-gray-100 h-screen">
         <div className="relative mb-4">
           <Search className="absolute left-3 top-3 text-gray-400" size={18} />
           <input
