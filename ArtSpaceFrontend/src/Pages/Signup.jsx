@@ -107,7 +107,7 @@ const Signup = () => {
                 name="email"
                 required
                 className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 focus:outline-none transition duration-200"
-                placeholder="your@email.com"
+                placeholder="your@ArtSpaceEmail.com"
                 value={signupInfo.email}
               />
             </div>

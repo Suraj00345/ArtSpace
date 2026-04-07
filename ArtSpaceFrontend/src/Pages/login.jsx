@@ -93,7 +93,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none"
-                placeholder="you@artistry.com"
+                placeholder="you@artspace.com"
               />
             </div>
           </div>

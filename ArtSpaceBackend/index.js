@@ -15,16 +15,17 @@ init(httpServer);
 // bodyParser.json() middleware is used in Node.js/Express.js
 // applications to parse incoming HTTP request bodies that are in JSON format,
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cors({
-    origin: [
-        "http://localhost:5173",          
-        "https://artspace-6dw4.onrender.com"
-    ],
+app.use(
+  cors({
+    origin: "https://art-space-kappa.vercel.app", // Your specific Vercel URL
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true 
-}));
+    credentials: true,
+  }),
+);
+// This is CRITICAL for Render to handle the browser's "check" call
+app.options("*", cors());
+app.use(bodyParser.json());
 
 // DB connection
 require("./Models/db");
