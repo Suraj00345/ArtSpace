@@ -23,15 +23,17 @@ const Login = () => {
     }
     setLoading(true); // ✅
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${API_URL}/auth/login`,
+        { withCredentials: true },
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginInfo),
         },
-        body: JSON.stringify(loginInfo),
-
-        withCredentials: true,
-      });
+      );
       const result = await response.json();
       const { success, message, error, jwtToken, name } = result;
       if (success) {
