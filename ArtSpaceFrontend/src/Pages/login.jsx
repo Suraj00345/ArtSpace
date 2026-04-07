@@ -28,7 +28,6 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        // In Fetch API, it is 'credentials', not 'withCredentials' (that's for Axios)
         credentials: "include",
         body: JSON.stringify(loginInfo),
       });
