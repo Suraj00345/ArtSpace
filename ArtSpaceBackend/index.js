@@ -15,10 +15,17 @@ init(httpServer);
 // bodyParser.json() middleware is used in Node.js/Express.js
 // applications to parse incoming HTTP request bodies that are in JSON format,
 app.use(express.urlencoded({ extended: true }));
+// 1. MUST BE FIRST: CORS Configuration
 app.use(
-  cors(),
+  cors({
+    origin: ["https://art-space-kappa.vercel.app", "http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
 );
-// This is CRITICAL for Render to handle the browser's "check" call
+
+// Handle Preflight for all routes
 app.options("*", cors());
 app.use(bodyParser.json());
 
