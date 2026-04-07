@@ -1,3 +1,4 @@
+import { Palette } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -6,10 +7,13 @@ const Navbar = () => {
      ${isActive ? "bg-violet-700 text-white" : "text-gray-600 hover:bg-gray-200"}`;
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r shadow-sm">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-white  shadow-sm">
       {/* Logo */}
-      <div className="p-9 text-3xl font-bold border-b text-gray-600">
-        Art<span className="text-violet-700">Space</span>
+      <div className="p-9 text-3xl font-bold bg-purple-100 shadow-sm  text-gray-600 flex items-center gap-2">
+        <Palette className="w-8 h-8 text-purple-600" />
+        <div>
+          Art<span className="text-violet-700">Space</span>
+        </div>
       </div>
 
       {/* Nav Links */}

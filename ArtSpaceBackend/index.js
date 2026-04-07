@@ -16,7 +16,15 @@ init(httpServer);
 // applications to parse incoming HTTP request bodies that are in JSON format,
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: [
+        "http://localhost:5173",          
+        "https://artspace-6dw4.onrender.com"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true 
+}));
 
 // DB connection
 require("./Models/db");

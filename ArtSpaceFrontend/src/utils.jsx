@@ -13,5 +13,5 @@ export const handleError = (msg) => {
 };
 
 
-
-export const API_URL = "https://artspace-mno1.onrender.com";
+export const API_URL = "https://artspace-6dw4.onrender.com";
+// export const API_URL = "http://localhost:3000";

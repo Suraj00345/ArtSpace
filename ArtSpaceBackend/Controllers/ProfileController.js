@@ -111,7 +111,6 @@ const updateProfile = async (req, res) => {
 //Search Profile details
 const searchUser = async (req, res) => {
   try {
-    // CHANGE THIS LINE:
     const { q } = req.query;
     // console.log("Query received:", q);
 

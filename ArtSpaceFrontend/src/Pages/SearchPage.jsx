@@ -31,7 +31,7 @@ const SearchPage = () => {
     const fetchExplore = async () => {
       try {
         const res = await fetch(`${API_URL}/artworks/explore`, {
-          headers: { Authorization: token }, // Standard Bearer format
+          headers: { Authorization: token },
         });
         const data = await res.json();
         // console.log(data);
@@ -70,7 +70,7 @@ const SearchPage = () => {
 
       const res = await fetch(`${API_URL}/profile/search?q=${query}`, {
         method: "GET",
-        signal: signal, // Move signal inside this object
+        signal: signal, 
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
