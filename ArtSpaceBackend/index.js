@@ -1,39 +1,42 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const { createServer } = require("http");
 const { init } = require("./Util/socket.js");
 const cors = require("cors");
 require("dotenv").config();
-const app = express();
 
+const app = express();
 //create Http server
 const httpServer = createServer(app);
 
 //start socket.io server
 init(httpServer);
 
-// bodyParser.json() middleware is used in Node.js/Express.js
-// applications to parse incoming HTTP request bodies that are in JSON format,
-app.use(express.urlencoded({ extended: true }));
 // 1. MUST BE FIRST: CORS Configuration
+const allowedOrigins = [
+  "https://art-space-kappa.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: ["https://art-space-kappa.vercel.app", "http://localhost:5173"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   }),
 );
 
-// Handle Preflight for all routes
-app.options("*", cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // DB connection
 require("./Models/db");
-
-// PORT
-const PORT = process.env.PORT || 3001;
 
 // Routes
 const AuthRouter = require("./Routes/AuthRouter.js");
@@ -63,6 +66,9 @@ app.use("/settings", SettingsRouter);
 app.get("/ping", (req, res) => {
   res.send("PONG");
 });
+
+// PORT
+const PORT = process.env.PORT || 3001;
 
 // Start Server
 app.listen(PORT, () => {

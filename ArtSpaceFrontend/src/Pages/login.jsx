@@ -28,8 +28,6 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include" is perfect for cross-domain (Vercel -> Render)
-        credentials: "include",
         body: JSON.stringify(loginInfo),
       });
       const result = await response.json();
