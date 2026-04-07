@@ -23,17 +23,15 @@ const Login = () => {
     }
     setLoading(true); // ✅
     try {
-      const response = await fetch(
-        `${API_URL}/auth/login`,
-        { withCredentials: true },
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginInfo),
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        // In Fetch API, it is 'credentials', not 'withCredentials' (that's for Axios)
+        credentials: "include",
+        body: JSON.stringify(loginInfo),
+      });
       const result = await response.json();
       const { success, message, error, jwtToken, name } = result;
       if (success) {
