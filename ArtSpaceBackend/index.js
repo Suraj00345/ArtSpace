@@ -13,7 +13,7 @@ init(httpServer);
 
 // 1. MUST BE FIRST: CORS Configuration
 const allowedOrigins = [
-  "https://art-space-kappa.vercel.app",
+  "https://relaxed-axolotl-b7a965.netlify.app",
   "http://localhost:5173",
 ];
 
