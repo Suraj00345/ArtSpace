@@ -71,6 +71,6 @@ app.get("/ping", (req, res) => {
 const PORT = process.env.PORT || 3001;
 
 // Start Server
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
